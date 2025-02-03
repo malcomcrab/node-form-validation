@@ -4,7 +4,8 @@ const { body, validationResult } = require("express-validator");
 
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters.";
-
+const bioLengthErr = "must be between 1 and 150 characters.";
+const emailTypeErr = "Must follow regular email format"
 
 exports.usersListGet = (req, res) => {
   res.render("index", {
@@ -32,7 +33,11 @@ const validateUser = [
     body("lastName").trim()
       .isAlpha().withMessage(`Last name ${alphaErr}`)
       .isLength({ min: 1, max: 10 }).withMessage(`Last name ${lengthErr}`),
-  ];
+    body("bio").trim()
+      .isLength({ min: 1, max: 150 }).withMessage(`Bio ${bioLengthErr}`),
+    body("email").trim()
+        .isEmail().withMessage(`${emailTypeErr}`)
+    ];
   
   // We can pass an entire array of middleware validations to our controller.
   exports.usersCreatePost = [
